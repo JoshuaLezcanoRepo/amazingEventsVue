@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bs-body-font-family: 'Inter', sans-serif;
+    letter-spacing: -0.5px;
+}
+
+body, .card {
+    background-color: #121212;
+}
+
+.navbar {
+    background-color: #121212d5;
+    backdrop-filter: blur(10px);
+}
+
+.nav-link {
+    color: #747474;
+}
+
+.nav-link:hover, i:hover {
+    color: #d90368;
+    transition: 0.5s all;
+}
+
+i {
+    color: #fff;
+}
+
+.card {
+    border-color: #2e2e2e;
+}
+
+.carousel-item {
+    height: 300px;
+}
+
+.carousel-image {
+    filter: brightness(20%);
+    object-fit: cover;
+}
+
+.carousel-caption {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85%;
+}
+
+.card-img-top {
+    object-fit: cover;
+    height: 12.5rem;
+}
+
+.carousel-caption h1 {
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+
+/* ScrollBar */
+::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+::-webkit-scrollbar-track {
+    background: #121212;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1f1f1f;
+    border-radius: 100vw;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #d90368;
+}
+
+.form-control::placeholder {
+    color: #5e5e5e;
+}
+
+.card {
+    transition: 0.5s all ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 24px 36px rgba(0, 0, 0, 0.11), 0 24px 46px #d903675d;
+}
+
+.favorite {
+    margin-right: 5px;
+    margin-top: 5px;
+    background-color: #12121296;
+    color: #fff;
+}
+
+.favorite:hover {
+    background-color: #d90368;
+    color: #fff;
+}
+
+.like, .likeDetail {
+    color: #d90368;
+}
+
+.like {
+    background-color: #000000d5;
+}
+
+.likeDetail {
+    background-color: #ffffff;
+}
+
+.status {
+    background-color: #000000e3;
+    color: #fff;
+    font-weight: 600;
+    border-bottom-right-radius: 10px;
+}
+
+.toast, .toast-header, .toast-body {
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+    filter: invert(100%);
+}

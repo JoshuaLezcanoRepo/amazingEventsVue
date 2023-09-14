@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Unique Experience!">
+    <link rel="icon" href="../images/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <title>Upcoming Events - Amazing Events</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <!-- NavBar -->
+    <nav class="navbar navbar-expand-lg fixed-top px-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../../index.html"><img src="../images/amazing_brand.png" alt="Amazing Events Brand" width="150"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarScroll">
+                <ul class="navbar-nav mx-2 my-lg-0 navbar-nav-scroll fw-medium">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Upcoming Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./pastEvents.html">Past Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./stats.html">Stats</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#offcanvas" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                        aria-controls="offcanvasRight">My Favorites</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main id="app">
+        <!-- Carousel -->
+        <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active bg-light" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" class="bg-light" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" class="bg-light" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" v-for="image of randomImages">
+                    <img v-bind:src="image" v-bind:id="image" v-bind:alt="image" class="d-block w-100 h-100 carousel-image">
+                    <div class="container">
+                        <div class="carousel-caption text-center">
+                            <h1 class="fw-bolder text-white">Upcoming Events</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden ">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <!-- CheckBox's & Search -->
+        <div class="p-4 container-fluid check-box">
+            <form class="row w-auto justify-content-center align-items-center">
+                <div class="col-auto">
+                    <div id="catContainer" class="justify-content-center align-items-center">
+                        <div class="form-check form-check-inline" v-for="category of allCategories">
+                            <input class="form-check-input" type="checkbox" v-bind:id="category" v-bind:value="category" v-model="inputCategory">
+                            <label class="form-check-label" v-bind:for="category" v-on:change="filterResults">{{ category }}</label>
+                        </div>
+                    </div>
+                    <div class="input-group mt-3 mb-3">
+                        <input type="text" class="form-control border-0" placeholder="Search by title event..." aria-label="username" aria-describedby="button-addon2" id="inputSearch" v-model="inputSearch" v-on:input="filterResults">
+                        <button class="btn btn-outline-secondary" type="submit" id="inputSearchButton" @click.prevent="handleIncrement"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Cards -->
+        <div class="container-fluid album px-5">
+            <p id="totEvents" v-if="eventsFiltered.length > 0">Total Upcoming Events: {{contadorCards}}</p>
+            <div id="baseCard" class="row row-cols-1 row-cols-md-4 g-3 align-content-center">
+                <div class="col" v-if="eventsFiltered.length > 0" v-for="event of eventsFiltered">
+                    <div class="card h-100">
+                        <div id="containerBtn"><i class="favorite btn position-absolute top-0 end-0 bi bi-heart-fill" id="btnFav"></i></div>
+                        <small v-if="Date.parse(curDate) < Date.parse(event.date)" class="position-absolute top-0 start-0 py-2 px-3 status">Upcoming Events</small>
+                        <small v-else="Date.parse(curDate) > Date.parse(event.date)" class="position-absolute top-0 start-0 py-2 px-3 status">Past Events</small>
+                        <img v-bind:src="event.image" class="card-img-top" alt="Image Card 1">
+                        <div class="card-body text-white">
+                            <h5 class="card-title fw-semibold">{{ event.name }}</h5>
+                            <p class="card-text">{{ event.description }}</p>
+                        </div>
+                        <div class="card-body d-flex justify-content-between align-items-center text-white">
+                            <small>Price ${{ event.price }} USD</small>
+                            <div class="btn-group">
+                                <a v-bind:href=`../pages/details.html?id=${event._id}` role="button"
+                                    class="btn btn-outline-light">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p v-else class="h5 text-center w-100">🤔 ¡Oops! It seems we didn't find any results. Can you try again?</p>
+            </div>
+            <p id="totEvents" v-if="eventsFiltered.length < 0"></p>
+        </div>
+
+        <!-- Toast -->
+        <div class="offcanvas offcanvas-end " tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">My Favorites ⚡️</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body" v-if="arrayFav.length > 0">
+                <div class="list-group" id="baseFavorites">
+                    <a v-for="favorite of arrayFav" v-bind:href=`./src/pages/details.html?id=${favorite._id}`
+                        class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                        <img v-bind:src="favorite.image" alt="twbs" width="32" height="32"
+                            class="object-fit-cover rounded-circle flex-shrink-0">
+                        <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                                <h6 class="mb-0">{{ favorite.name }}</h6>
+                                <p class="pt-3 mb-0 opacity-75">{{ favorite.description }}</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">{{ favorite.date }}</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="d-grid" v-if="arrayFav.length > 0">
+                <button id="btnBody" type="button" class="btn btn-danger rounded-0" v-on:click="clickBtn"><i class="bi bi-trash"></i> Remove all Favorite Events</button>
+            </div>
+            <div class="offcanvas-body h-100" v-else>
+                You don't have any favorite events
+            </div>
+        </div>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header text-black">
+                    <img src="../images/amazing_brand.png" class="rounded me-2" alt="Logo Amazing Events" width="100">
+                    <strong class="me-auto">Favorites</strong>
+                    <small>Right Now</small>
+                    <button type="button" class="btn-close text-bg-light" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-black" id="messageToast">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto">
+        <div class="d-flex flex-wrap justify-content-between align-items-center px-5 py-4">
+            <ul class="nav col-md-4 justify-content-start list-unstyled d-flex fs-4">
+                <li>
+                    <a href="https://www.whatsapp.com/">
+                        <i class="bi bi-whatsapp"></i>
+                    </a>
+                </li>
+                <li class="ms-3">
+                    <a href="https://www.facebook.com/">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                </li>
+                <li class="ms-3">
+                    <a href="https://twitter.com/">
+                        <i class="bi bi-twitter"></i>
+                    </a>
+                </li>
+            </ul>
+            <span class="mb-md-0 fw-semibold">Argentina Programa - DW 14</span>
+        </div>
+    </footer>
+
+    <!-- Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="../scripts/upcoming.js"></script>
+</body>
+</html>
